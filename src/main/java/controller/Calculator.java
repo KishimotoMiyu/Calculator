@@ -37,9 +37,9 @@ public class Calculator extends HttpServlet {
 		String execution = request.getParameter("execution");
 		String num1str =   request.getParameter("num1str");
 		String num2str ="";
-		int answer = 0;
-		int num1 = 0;
-		int num2 = 0;
+		double answer = 0;
+		double num1 = 0;
+		double num2 = 0;
 		
 		// cボタンがクリックされた時の処理
 		
@@ -48,8 +48,8 @@ public class Calculator extends HttpServlet {
 	    
 	    if(execution != null ) {
 	    	
-	    	  num1 =Integer.parseInt(num1str); 
-	    	  num2 =Integer.parseInt(result); 
+	    	  num1 = Double.parseDouble(num1str);
+	    	  num2 = Double.parseDouble(result); 
 	    
 			    switch(symbolMemo) {
 				   case "+":
@@ -65,7 +65,21 @@ public class Calculator extends HttpServlet {
 				   break;
 				   
 				   case "÷":
-				   answer = num1 / num2;
+					   if( num2 == 0.0) {
+						   
+						   request.setAttribute("result","0では割れません");
+						   request.setAttribute("message","");
+						   request.setAttribute("symbolMemo",null);
+						   
+						   String views = "WEB-INF/views/calculator.jsp";
+							RequestDispatcher dis = request.getRequestDispatcher(views);
+						    dis.forward(request, response);
+						    doGet(request, response);
+						   
+					   } else {
+						   answer = num1 / num2 ;		
+					   }
+					   
 				   break;
 			   }
 		    
